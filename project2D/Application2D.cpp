@@ -18,7 +18,7 @@ bool Application2D::startup() {
 
 	_2dRenderer = new aie::Renderer2D();
 
-	_GridManager = new GridManager(100, getWindowWidth() ,getWindowHeight());
+	_GridManager = new GridManager(25, getWindowWidth() ,getWindowHeight());
 
 	_Texture = new aie::Texture("./textures/numbered_grid.tga");
 
