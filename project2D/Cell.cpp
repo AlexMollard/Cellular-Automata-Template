@@ -13,8 +13,9 @@ Cell::Cell()
 	_B = 0.0f;
 	_CellX = 0.0f;
 	_CellY = 0.0f;
-	_Survive = false;
+	_Survive = true;
 	_Type = 1;
+	_Timer = 0;
 	_Wall = false;
 }
 
@@ -22,8 +23,10 @@ void Cell::Draw(aie::Renderer2D* renderer)
 {
 }
 
-void Cell::Update(float deltaTime, aie::Input* input)
+void Cell::Update(float DeltaTime, aie::Input* input)
 {
+	_Timer += DeltaTime * 10;
+
 	MouseOver(input);
 
 	if (_Survive)
@@ -68,12 +71,39 @@ void Cell::Update(float deltaTime, aie::Input* input)
 
 void Cell::MouseOver(aie::Input* input)
 {
+	// Save Cell
 	if (input->isMouseButtonDown(aie::INPUT_MOUSE_BUTTON_LEFT))
 	{
-		if (input->getMouseX() >= _CellX - (_SizeX / 2) && input->getMouseX() <= _CellX + (_SizeX / 2) &&
-			input->getMouseY() >= _CellY - (_SizeY / 2) && input->getMouseY() <= _CellY + (_SizeY / 2))
+		if (_Timer > 2)
 		{
-			_Survive = true;
+			if (input->getMouseX() >= _CellX - (_SizeX / 2) && input->getMouseX() <= _CellX + (_SizeX / 2) &&
+				input->getMouseY() >= _CellY - (_SizeY / 2) && input->getMouseY() <= _CellY + (_SizeY / 2))
+			{
+				if (_Survive)
+				{
+					_Type += 1;
+					if (_Type == 4)
+						_Type = 1;
+				}
+				_Survive = true;
+			}
+
+			_Timer = 0;
+		}
+	}
+
+	// Kill Cell
+	if (input->isMouseButtonDown(aie::INPUT_MOUSE_BUTTON_RIGHT))
+	{
+		if (_Timer > 2)
+		{
+			if (input->getMouseX() >= _CellX - (_SizeX / 2) && input->getMouseX() <= _CellX + (_SizeX / 2) &&
+				input->getMouseY() >= _CellY - (_SizeY / 2) && input->getMouseY() <= _CellY + (_SizeY / 2))
+			{
+				_Survive = false;
+			}
+
+			_Timer = 0;
 		}
 	}
 }

@@ -7,7 +7,7 @@ public:
 	Cell();
 
 	// Update Functions
-	void Update(float deltaTime, aie::Input* input);
+	void Update(float DeltaTime, aie::Input* input);
 	void Draw(aie::Renderer2D* renderer);
 	void MouseOver(aie::Input* input);
 
@@ -69,5 +69,8 @@ private:
 
 	// Wall Variable
 	bool _Wall;
+
+	// Timer Variable
+	float _Timer;
 };
 

@@ -47,8 +47,9 @@ private:
 	// Other Variables
 	float _Timer;
 
-	// Cell Object Pool
+	// Cells
 	Cell** _Cells;
+	Cell _Wall;
 
 };
 

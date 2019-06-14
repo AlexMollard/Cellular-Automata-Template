@@ -34,33 +34,39 @@ GridManager::GridManager(int cellAmount, float windowSizeX, float windowSizeY)
 	{
 		for (int y = 0; y < _CellTotal; y++)
 		{
+			// Set the walls
 			if (x == 0 || x == _CellTotal - 1 || y == 0 || y == _CellTotal - 1)
 			{
 				_Cells[x][y].SetWall(true);
 				_Cells[x][y].SetAlive(false);
+				_Cells[x][y].SetSurvive(false);
 			}
 			else
 			{
+				// Set alive and dead cells
 				int testing = rand() % 30;
 				// Set Cells
 				if (testing < 10)
 				{
-					_Cells[x][y].SetAlive(true);
+					_Cells[x][y].SetSurvive(true);
 					_Cells[x][y].SetType(1);
 				}
 				else if (testing < 20)
 				{
-					_Cells[x][y].SetAlive(false);
+					_Cells[x][y].SetSurvive(false);
 					_Cells[x][y].SetType(2);
 				}
 				else
 				{
-					_Cells[x][y].SetAlive(true);
+					_Cells[x][y].SetSurvive(true);
 					_Cells[x][y].SetType(3);
 				}
 			}
 		}
 	}
+
+	// Create wall cell
+	_Wall = _Cells[0][0];
 }
 
 void GridManager::Update(aie::Input* input, float deltaTime, float windowWidth, float windowHeight)
@@ -73,7 +79,7 @@ void GridManager::Update(aie::Input* input, float deltaTime, float windowWidth, 
 		Resize(windowWidth, windowHeight);
 
 	// Check all cells neighbours
-	if (input->isKeyDown(aie::INPUT_KEY_SPACE) && _Timer > 1)
+	if (input->isKeyDown(aie::INPUT_KEY_SPACE) && _Timer > 2)
 	{
 		CheckNeighbours();
 		_Timer = 0;	
@@ -97,7 +103,7 @@ void GridManager::Resize(float windowWidth, float windowHeight)
 		_WindowSizeY = windowHeight;
 
 		// Cell size
-		_CellSizeX = _WindowSizeX / _CellTotal / 2 ;
+		_CellSizeX = _WindowSizeX / _CellTotal / 2;
 		_CellSizeY = _WindowSizeY / _CellTotal / 2;
 
 		// Set all cells positions
@@ -127,14 +133,14 @@ void GridManager::CheckNeighbours()
 				_Type3Neighbours = 0;
 
 				// Reset neighbours
-				TR	= _Cells[x][y];
-				TM	= _Cells[x][y];
-				TL	= _Cells[x][y];
-				MR	= _Cells[x][y];
-				ML	= _Cells[x][y];
-				BR	= _Cells[x][y];
-				BM	= _Cells[x][y];
-				BL	= _Cells[x][y];
+				TR	= _Wall;
+				TM	= _Wall;
+				TL	= _Wall;
+				MR	= _Wall;
+				ML	= _Wall;
+				BR	= _Wall;
+				BM	= _Wall;
+				BL	= _Wall;
 
 				// Neighbour Cells
 				if (!_Cells[x + 1][y + 1].GetWall())
